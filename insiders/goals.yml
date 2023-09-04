@@ -1,0 +1,7 @@
+goals:
+  1000:
+    name: GraviFridge User Manual
+    features:
+    - name: "[Project] Shell scripts/libraries handler for mkdocstrings"
+      ref: /
+      since: 2023/09/04
