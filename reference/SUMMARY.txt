@@ -1,3 +1,0 @@
-* <code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> mkdocstrings_handlers
-    * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> shell](mkdocstrings_handlers/shell/index.md)
-        * [<code class="doc-symbol doc-symbol-nav doc-symbol-module"></code> handler](mkdocstrings_handlers/shell/handler.md)
