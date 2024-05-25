@@ -1,0 +1,51 @@
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[project]
+name = "mkdocstrings-shell"
+description = "A shell scripts/libraries handler for mkdocstrings."
+authors = [{name = "Timothée Mazzucotelli", email = "dev@pawamoy.fr"}]
+license = {text = "ISC"}
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = []
+dynamic = ["version"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Documentation",
+    "Topic :: Software Development",
+    "Topic :: Utilities",
+    "Typing :: Typed",
+]
+dependencies = [
+    "mkdocstrings>=0.18",
+    "shellman>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://mkdocstrings.github.io/shell"
+Documentation = "https://mkdocstrings.github.io/shell"
+Changelog = "https://mkdocstrings.github.io/shell/changelog"
+Repository = "https://github.com/mkdocstrings/shell"
+Issues = "https://github.com/mkdocstrings/shell/issues"
+Discussions = "https://github.com/mkdocstrings/shell/discussions"
+Gitter = "https://gitter.im/mkdocstrings/shell"
+Funding = "https://github.com/sponsors/pawamoy"
+
+[tool.pdm]
+version = {source = "scm"}
+
+[tool.pdm.build]
+package-dir = "src"
+includes = ["src/mkdocstrings_handlers"]
+editable-backend = "editables"
