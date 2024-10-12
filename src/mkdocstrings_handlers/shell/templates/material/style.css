@@ -1,0 +1,5 @@
+/* No line break before first paragraph of descriptions. */
+.doc-md-description,
+.doc-md-description>p:first-child {
+    display: inline;
+}

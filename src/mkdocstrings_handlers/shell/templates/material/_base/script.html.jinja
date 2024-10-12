@@ -1,0 +1,158 @@
+{% if do_not_escape_lines_that_start_with is not defined %}
+  {% set do_not_escape_lines_that_start_with = None %}
+{% endif %}
+
+{% macro render_text_tag(tag) %}
+  {% for occurrence in tag %}
+    {{ occurrence.text | convert_markdown(heading_level, html_id=filename) }}
+  {% endfor %}
+{% endmacro %}
+
+{% macro render_name_desc_tag(tag) %}
+  <ul>
+    {% for occurrence in tag %}
+      <li>
+        <em><code>{{ occurrence.name }}</code></em>:
+        <div class="doc doc-md-description">
+          {{ occurrence.description | convert_markdown(heading_level, html_id=filename) }}
+        </div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
+{% filter heading(heading_level, id=filename, role="script") %}{{ filename }}{% endfilter %}
+
+{% if script.brief %}
+  {{ script.brief[0].text | convert_markdown(heading_level, html_id=filename) }}
+{% endif %}
+
+{% if script.usage %}
+  <strong>Usage</strong>
+  {% for usage in script.usage %}
+    <pre><code>{{ usage.program }} {{ usage.command }}</code></pre>
+  {% endfor %}
+{% endif %}
+
+{% if script.desc %}
+  <strong>Description</strong>
+  {{ render_text_tag(script.desc) }}
+{% endif %}
+
+{% if script.option %}
+  <strong>Options</strong>
+  {% for opt_group, opt_list in script.option|groupby('group', sort=False) %}
+    {% if opt_group %}
+      <em>{{ opt_group }}</em>
+    {% endif %}
+    <ul>
+      {% for option in opt_list %}
+        <li>
+          {% if option.short %}<code class="option_short">{{ option.short }}</code>{%- if option.long %}, {% endif %}{% endif %}
+          {% if option.long %}<code>{{ option.long }}</code>{% endif %}
+          {% if option.positional %}<code>{{ option.positional }}</code>{% endif %}:
+          <div class="doc doc-md-description">
+            {{ option.description | convert_markdown(heading_level, html_id=filename) }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+    {% if not loop.last %}{{ '\n' }}{% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if script.env %}
+  <strong>Environment Variables</strong>
+  {{ render_name_desc_tag(script.env) }}
+{% endif %}
+
+{% if script.file %}
+  <strong>Files</strong>
+  {{ render_name_desc_tag(script.file) }}
+{% endif %}
+
+{% if script.exit %}
+  <strong>Exit Status</strong>
+  {{ render_name_desc_tag(script.exit) }}
+{% endif %}
+
+{% if script.stdin %}
+  <strong>Standard Input</strong>
+  {{ render_text_tag(script.stdin) }}
+{% endif %}
+
+{% if script.stdout %}
+  <strong>Standard Output</strong>
+  {{ render_text_tag(script.stdout) }}
+{% endif %}
+
+{% if script.stderr %}
+  <strong>Standard Error</strong>
+  {{ render_text_tag(script.stderr) }}
+{% endif %}
+
+{% if script.function %}
+  <strong>Functions</strong>
+  {% for function in script.function %}
+    {% include "function.html.jinja" with context %}
+    {% if not loop.last %}<hr>{% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if script.example %}
+  <strong>Examples</strong>
+  {% for example in script.example %}
+    <em>{{ example.brief | convert_markdown(heading_level, html_id=filename) }}</em>
+    {% if example.code %}
+      {% filter highlight(language=example.code_lang) %}{{ example.code }}{% endfilter %}
+    {% endif %}
+    {% if example.description %}
+      {{ example.description | convert_markdown(heading_level, html_id=filename) }}
+    {% endif %}
+  {% endfor %}
+{% endif %}
+
+{% if script.error %}
+  <strong>Errors</strong>
+  {{ render_text_tag(script.error) }}
+{% endif %}
+
+{% if script.bug %}
+  <strong>Bugs</strong>
+  {{ render_text_tag(script.bug) }}
+{% endif %}
+
+{% if script.caveat %}
+  <strong>Caveats</strong>
+  {{ render_text_tag(script.caveat) }}
+{% endif %}
+
+{% if script.author %}
+  <strong>Authors</strong>
+  {{ render_text_tag(script.author) }}
+{% endif %}
+
+{% if script.copyright %}
+  <strong>Copyright</strong>
+  {{ render_text_tag(script.copyright) }}
+{% endif %}
+
+{% if script.license %}
+  <strong>License</strong>
+  {{ render_text_tag(script.license) }}
+{% endif %}
+
+{% if script.history %}
+  <strong>History</strong>
+  {{ render_text_tag(script.history) }}
+{% endif %}
+
+{% if script.note %}
+  <strong>Notes</strong>
+  {{ render_text_tag(script.note) }}
+{% endif %}
+
+{% if script.seealso %}
+  <strong>See Also</strong>
+  {{ render_text_tag(script.seealso) }}
+{% endif %}

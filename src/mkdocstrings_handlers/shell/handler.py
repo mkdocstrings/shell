@@ -3,13 +3,16 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, ClassVar, Mapping, MutableMapping
+from typing import TYPE_CHECKING, Any, ClassVar
 
-from mkdocstrings.handlers.base import BaseHandler, CollectorItem
+from mkdocstrings.handlers.base import BaseHandler, CollectionError, CollectorItem
 from mkdocstrings.loggers import get_logger
+from shellman import DocFile
 from shellman.templates.filters import FILTERS
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping, MutableMapping
+
     from markdown import Markdown
 
 
@@ -18,6 +21,9 @@ logger = get_logger(__name__)
 
 class ShellHandler(BaseHandler):
     """The Shell handler class."""
+
+    name: str = "shell"
+    """The handler's name."""
 
     domain: str = "shell"
     """The cross-documentation domain/language for this handler."""
@@ -74,9 +80,13 @@ class ShellHandler(BaseHandler):
         Returns:
             Anything you want, as long as you can feed it to the `render` method.
         """
-        return {"identifier": identifier}
+        script_path = self.base_dir / identifier
+        try:
+            return DocFile(str(script_path))
+        except FileNotFoundError as error:
+            raise CollectionError(f"Could not find script '{script_path}'") from error
 
-    def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:  # noqa: ARG002
+    def render(self, data: CollectorItem, config: Mapping[str, Any]) -> str:
         """Render a template using provided data and configuration options.
 
         Parameters:
@@ -87,9 +97,14 @@ class ShellHandler(BaseHandler):
         Returns:
             The rendered template as HTML.
         """
-        return (
-            f"<i><b><code>::: {data['identifier']}</code></b><br>The public version of mkdocstrings-shell is a no-op "
-            "and exists only to allow building docs without errors. Please rely on docs preview in CI.</i>"
+        final_config = {**self.default_config, **config}
+        heading_level = final_config["heading_level"]
+        template = self.env.get_template("script.html.jinja")
+        return template.render(
+            config=final_config,
+            filename=data.filename,
+            script=data.sections,
+            heading_level=heading_level,
         )
 
     def update_env(self, md: Markdown, config: dict) -> None:

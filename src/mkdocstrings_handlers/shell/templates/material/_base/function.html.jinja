@@ -1,0 +1,64 @@
+{% macro render_text_tag_list(tag) %}
+  <ul>
+    {% for occurrence in tag %}
+      <li>{{ occurrence | convert_markdown(heading_level + 1, html_id=filename) }}</li>
+    {% endfor %}
+  </ul>
+{% endmacro %}
+
+{% filter heading(heading_level + 1, id=filename, role="script") %}{{ function.prototype }}{% endfilter %}
+
+{{ function.brief | convert_markdown(heading_level, html_id=filename) }}
+
+{% if function.description %}
+  {{ function.description | convert_markdown(heading_level + 1, html_id=filename) }}
+{% endif %}
+
+{% if function.arguments %}
+  <strong>Arguments</strong>
+  <ul>
+    {% for argument in function.arguments %}
+      <li>
+        <strong><code>{{ argument | firstword }}</code>: </strong>
+        {{ argument | body | convert_markdown(heading_level + 1, html_id=filename) }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if function.return_codes %}
+  <strong>Return codes</strong>
+  <ul>
+    {% for return_code in function.return_codes %}
+      <li>
+        <strong><code>{{ return_code | firstword }}</code>: </strong>
+        {{ return_code | body | convert_markdown(heading_level + 1, html_id=filename) }}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{% if function.preconditions %}
+  <strong>Pre-conditions</strong>
+  {{ render_text_tag_list(function.preconditions) }}
+{% endif %}
+
+{% if function.seealso %}
+  <strong>See also</strong>
+  {{ render_text_tag_list(function.seealso) }}
+{% endif %}
+
+{% if function.stdin %}
+  <strong>Standard input</strong>
+  {{ render_text_tag_list(function.stdin) }}
+{% endif %}
+
+{% if function.stdout %}
+  <strong>Standard output</strong>
+  {{ render_text_tag_list(function.stdout) }}
+{% endif %}
+
+{% if function.stderr %}
+  <strong>Standard error</strong>
+  {{ render_text_tag_list(function.stderr) }}
+{% endif %}
