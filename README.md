@@ -3,7 +3,6 @@
 [![ci](https://github.com/mkdocstrings/shell/workflows/ci/badge.svg)](https://github.com/mkdocstrings/shell/actions?query=workflow%3Aci)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://mkdocstrings.github.io/shell/)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-shell.svg)](https://pypi.org/project/mkdocstrings-shell/)
-[![gitpod](https://img.shields.io/badge/gitpod-workspace-708FCC.svg?style=flat)](https://gitpod.io/#https://github.com/mkdocstrings/shell)
 [![gitter](https://badges.gitter.im/join%20chat.svg)](https://app.gitter.im/#/room/#shell:gitter.im)
 
 A shell scripts/libraries handler for mkdocstrings.
