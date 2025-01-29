@@ -94,5 +94,5 @@ def fixture_handler(plugin: MkdocstringsPlugin, ext_markdown: Markdown) -> Shell
         A handler instance.
     """
     handler = plugin.handlers.get_handler("shell")
-    handler._update_env(ext_markdown, plugin.handlers._config)
+    handler._update_env(ext_markdown, config=plugin.handlers._tool_config)
     return handler  # type: ignore[return-value]

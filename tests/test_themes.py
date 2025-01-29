@@ -35,6 +35,6 @@ def test_render_themes_templates_python(identifier: str, plugin: MkdocstringsPlu
         ext_markdown: Pytest fixture (see conftest.py).
     """
     handler = plugin.handlers.get_handler("shell")
-    handler._update_env(ext_markdown, plugin.handlers._config)
+    handler._update_env(ext_markdown, config=plugin.handlers._tool_config)
     data = handler.collect(identifier, {})
     handler.render(data, {})
