@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
     from pathlib import Path
 
-    from mkdocstrings.plugin import MkdocstringsPlugin
+    from mkdocstrings import MkdocstringsPlugin
 
     from mkdocstrings_handlers.shell.handler import ShellHandler
 

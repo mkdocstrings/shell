@@ -6,8 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, ClassVar
 
 from mkdocs.exceptions import PluginError
-from mkdocstrings.handlers.base import BaseHandler, CollectionError, CollectorItem
-from mkdocstrings.loggers import get_logger
+from mkdocstrings import BaseHandler, CollectionError, CollectorItem, get_logger
 from shellman import DocFile
 from shellman.templates.filters import FILTERS
 
@@ -17,7 +16,7 @@ if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
 
     from mkdocs.config.defaults import MkDocsConfig
-    from mkdocstrings.handlers.base import HandlerOptions
+    from mkdocstrings import HandlerOptions
 
 
 logger = get_logger(__name__)
