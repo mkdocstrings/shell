@@ -1,0 +1,50 @@
+{
+  "$defs": {
+    "ShellInputOptions": {
+      "description": "Accepted input options.",
+      "properties": {
+        "extra": {
+          "description": "Extra options.",
+          "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/configuration/#extra)\n\nExtra options.",
+          "title": "extra",
+          "type": "object"
+        },
+        "heading_level": {
+          "default": 2,
+          "description": "The initial heading level to use.",
+          "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/configuration/#heading_level)\n\nThe initial heading level to use.",
+          "title": "heading_level",
+          "type": "integer"
+        },
+        "show_root_heading": {
+          "default": false,
+          "description": "Show the heading of the object at the root of the documentation tree.\n\nThe root object is the object referenced by the identifier after `:::`.",
+          "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/configuration/#show_root_heading)\n\nShow the heading of the object at the root of the documentation tree.\n\nThe root object is the object referenced by the identifier after `:::`.",
+          "title": "show_root_heading",
+          "type": "boolean"
+        },
+        "show_root_toc_entry": {
+          "default": true,
+          "description": "If the root heading is not shown, at least add a ToC entry for it.",
+          "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/configuration/#show_root_toc_entry)\n\nIf the root heading is not shown, at least add a ToC entry for it.",
+          "title": "show_root_toc_entry",
+          "type": "boolean"
+        }
+      },
+      "title": "ShellInputOptions",
+      "type": "object"
+    }
+  },
+  "description": "Python handler configuration.",
+  "properties": {
+    "options": {
+      "$ref": "#/$defs/ShellInputOptions",
+      "description": "Configuration options for collecting and rendering objects.",
+      "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/configuration/#options)\n\nConfiguration options for collecting and rendering objects.",
+      "title": "options"
+    }
+  },
+  "title": "ShellInputConfig",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft-07/schema"
+}

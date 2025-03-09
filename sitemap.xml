@@ -2,54 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://mkdocstrings.github.io/shell/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/changelog/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/code_of_conduct/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocstrings.github.io/shell/configuration/</loc>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/contributing/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/credits/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/license/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/insiders/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/insiders/changelog/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/insiders/installation/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/reference/SUMMARY/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/reference/mkdocstrings_handlers/shell/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
+    </url>
+    <url>
+         <loc>https://mkdocstrings.github.io/shell/reference/mkdocstrings_handlers/shell/config/</loc>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/reference/mkdocstrings_handlers/shell/debug/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
     <url>
          <loc>https://mkdocstrings.github.io/shell/reference/mkdocstrings_handlers/shell/handler/</loc>
-         <lastmod>2024-10-12</lastmod>
+         <lastmod>2025-03-09</lastmod>
     </url>
 </urlset>
