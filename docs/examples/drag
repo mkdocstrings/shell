@@ -31,6 +31,8 @@
 ## In this example, we define a `drop` alias that allows us to actually
 ## run `drag` then `drop` (instead of `drag --drop`).
 
+## \exit 1 No arguments provided.
+
 if [ $# -eq 0 ]; then
   shellman "$0"
   exit 1

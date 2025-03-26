@@ -8,11 +8,11 @@
   {% endfor %}
 {% endmacro %}
 
-{% macro render_name_desc_tag(tag) %}
+{% macro render_name_desc_tag(tag, name="name") %}
   <ul>
     {% for occurrence in tag %}
       <li>
-        <em><code>{{ occurrence.name }}</code></em>:
+        <code>{{ occurrence|attr(name) }}</code>:
         <div class="doc doc-md-description">
           {{ occurrence.description | convert_markdown(heading_level, html_id=filename) }}
         </div>
@@ -73,7 +73,7 @@
 
 {% if script.exit %}
   <strong>Exit Status</strong>
-  {{ render_name_desc_tag(script.exit) }}
+  {{ render_name_desc_tag(script.exit, name="code") }}
 {% endif %}
 
 {% if script.stdin %}
