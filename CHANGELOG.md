@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.0.2](https://github.com/mkdocstrings/shell/releases/tag/1.0.2) - 2025-03-26
+
+<small>[Compare with 1.0.1](https://github.com/mkdocstrings/shell/compare/1.0.1...1.0.2)</small>
+
+### Deprecations
+
+Importing from submodules is deprecated, import directly from `mkdocstrings_handlers.shell` instead.
+
+### Bug Fixes
+
+- Fix rendering of `exit` tags ([7fdfc66](https://github.com/mkdocstrings/shell/commit/7fdfc661771a5c9c08b69f88a25eb26c4c3fb263) by Timothée Mazzucotelli). [Issue-2](https://github.com/mkdocstrings/shell/issues/2)
+
+### Code Refactoring
+
+- Move submodules into an internal folder ([c6cb633](https://github.com/mkdocstrings/shell/commit/c6cb633003a9f028a5b4b4f71d4f8a690eae7e8b) by Timothée Mazzucotelli).
+
 ## [1.0.1](https://github.com/mkdocstrings/shell/releases/tag/1.0.1) - 2025-03-09
 
 <small>[Compare with 1.0.0](https://github.com/mkdocstrings/shell/compare/1.0.0...1.0.1)</small>
