@@ -23,13 +23,17 @@ nav:
   - Changelog: changelog.md
   - Credits: credits.md
   - License: license.md
-# defer to gen-files + literate-nav
-- API reference:
-  - mkdocstrings-shell: reference/
+- Usage:
+  - Configuration:
+    - usage/configuration/index.md
+    - General: usage/configuration/general.md
+    - Headings: usage/configuration/headings.md
+  - Customization: usage/customization.md
+- API reference: reference/api.md
 - Development:
   - Contributing: contributing.md
   - Code of Conduct: code_of_conduct.md
-  # - Coverage report: coverage.md
+  - Coverage report: coverage.md
 - Insiders:
   - insiders/index.md
   - Getting started:
@@ -50,7 +54,8 @@ theme:
   - content.code.copy
   - content.tooltips
   - navigation.footer
-  - navigation.indexes
+  - navigation.instant.preview
+  - navigation.path
   - navigation.sections
   - navigation.tabs
   - navigation.tabs.sticky
@@ -94,6 +99,9 @@ markdown_extensions:
 - pymdownx.blocks.admonition
 - pymdownx.blocks.tab:
     alternate_style: true
+    slugify: !!python/object/apply:pymdownx.slugs.slugify
+      kwds:
+        case: lower
 - pymdownx.emoji:
     emoji_index: !!python/name:material.extensions.emoji.twemoji
     emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -116,27 +124,26 @@ plugins:
 - search
 - autorefs
 - markdown-exec
-- gen-files:
-    scripts:
-    - scripts/gen_ref_nav.py
-- literate-nav:
-    nav_file: SUMMARY.md
-# - coverage
+- section-index
+- coverage
 - mkdocstrings:
     handlers:
       python:
-        import:
+        inventories:
         - https://docs.python.org/3/objects.inv
         - https://mkdocstrings.github.io/objects.inv
         paths: [src]
         options:
+          backlinks: tree
           docstring_options:
             ignore_init_summary: true
           docstring_section_style: list
+          extensions: [scripts/griffe_extensions.py]
           filters: ["!^_"]
           heading_level: 1
           inherited_members: true
           merge_init_into_class: true
+          preload_modules: [mkdocstrings]
           separate_signature: true
           show_root_heading: true
           show_root_full_path: false
@@ -146,6 +153,12 @@ plugins:
           show_symbol_type_toc: true
           signature_crossrefs: true
           summary: true
+- llmstxt:
+    files:
+    - output: llms-full.txt
+      inputs:
+      - index.md
+      - reference/**.md
 - git-revision-date-localized:
     enabled: !ENV [DEPLOY, false]
     enable_creation_date: true

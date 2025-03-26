@@ -1,4 +1,4 @@
-"""This module implements a handler for the Shell language."""
+# This module implements a handler for shell scripts and shell libraries.
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from mkdocstrings import BaseHandler, CollectionError, CollectorItem, get_logger
 from shellman import DocFile
 from shellman.templates.filters import FILTERS
 
-from mkdocstrings_handlers.shell.config import ShellConfig, ShellOptions
+from mkdocstrings_handlers.shell._internal.config import ShellConfig, ShellOptions
 
 if TYPE_CHECKING:
     from collections.abc import Mapping, MutableMapping
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from mkdocstrings import HandlerOptions
 
 
-logger = get_logger(__name__)
+_logger = get_logger(__name__)
 
 
 class ShellHandler(BaseHandler):
@@ -37,13 +37,17 @@ class ShellHandler(BaseHandler):
     fallback_theme: ClassVar[str] = "material"
     """The theme to fallback to."""
 
-    def __init__(self, config: ShellConfig, base_dir: Path, **kwargs: Any) -> None:  # noqa: D107
+    def __init__(self, config: ShellConfig, base_dir: Path, **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.config = config
+        """The handler configuration."""
         self.base_dir = base_dir
+        """The base directory for the handler."""
         self.global_options = config.options
+        """The global options for the handler."""
 
-    def get_options(self, local_options: Mapping[str, Any]) -> HandlerOptions:  # noqa: D102
+    def get_options(self, local_options: Mapping[str, Any]) -> HandlerOptions:
+        """Get the combined (global and local) options."""
         extra = {**self.global_options.get("extra", {}), **local_options.get("extra", {})}
         options = {**self.global_options, **local_options, "extra": extra}
         try:
@@ -70,7 +74,8 @@ class ShellHandler(BaseHandler):
             heading_level=heading_level,
         )
 
-    def update_env(self, config: MkDocsConfig) -> None:  # noqa: ARG002, D102
+    def update_env(self, config: MkDocsConfig) -> None:  # noqa: ARG002
+        """Update the Jinja environment."""
         self.env.trim_blocks = True
         self.env.lstrip_blocks = True
         self.env.keep_trailing_newline = False
