@@ -1,0 +1,1136 @@
+# mkdocstrings-shell
+
+A shell scripts/libraries handler for mkdocstrings. It uses [Shellman](https://github.com/pawamoy/shellman) to collect documentation from shell scripts.
+
+## Installation
+
+```
+pip install mkdocstrings-shell
+
+```
+
+## Configuration
+
+In MkDocs configuration file:
+
+mkdocs.yml
+
+```
+plugins:
+- mkdocstrings:
+    default_handler: shell  # optional
+
+```
+
+The handler does not offer any option yet.
+
+## Usage
+
+Use *mkdocstrings* syntax to inject documentation for a script:
+
+```
+::: relative/path/to/script
+    handler: shell  
+
+```
+
+Specifying `handler: shell` is optional if you declared `shell` as default handler in mkdocs.yml.
+
+## Example
+
+Let say we have a script called `drag` in a scripts folder, enabling a drag-drop feature on the command-line.
+
+View the script's contents:
+
+```
+#!/bin/bash
+
+## \author Timothée Mazzucotelli / @pawamoy <dev@pawamoy.fr>
+
+## \brief Save file paths in a buffer to move them somewhere else.
+## \desc This tool lets you save file paths into a buffer before moving or copying
+## them somewhere else. It acts like a drag-and-drop utility but for the command-line.
+## It can be useful when you don't want to type the entire destination path and
+## proceed in three or more steps instead, using shortcut commands to move around your
+## filesystem, dragging files from multiple directories.
+
+## \example Drag files from multiple directories, drop them in another:
+## \example-code bash
+##   cd ~/Documents
+##   drag ThisPlaylist.s3u
+##   cd ../Downloads
+##   drag ThisTrack.ogg AndThisVideo.mp4
+##   drag --drop ../project
+## \example-description
+## In this example, we simply move around in the filesystem, picking files in
+## each of these directories. At the end, we drop them all in a specific
+## directory.
+
+## \example Define a convenient `drop` alias:
+## \example-code bash
+##   alias drop='drag -d'
+##   drag file.txt
+##   cd /somewhere/else
+##   drop
+## \example-description
+## In this example, we define a `drop` alias that allows us to actually
+## run `drag` then `drop` (instead of `drag --drop`).
+
+## \exit 1 No arguments provided.
+
+if [ $# -eq 0 ]; then
+  shellman "$0"
+  exit 1
+fi
+
+data_file="/tmp/dragdrop"
+
+drop() {
+  local dir="${2:-.}"
+  local drop=$1
+  [ ! -f "${data_file}" ] && { echo "drag (drop): no files list" >&2; exit 0; }
+  while read -r f; do
+    $drop -v "$f" "${dir}"
+  done < "${data_file}"
+  rm "${data_file}"
+}
+
+main() {
+  case $1 in
+    ## \option -h, --help
+    ## Print this help and exit.
+    -h|--help) shellman "$0"; exit 0 ;;
+    ## \option -d, --drop [DIR]
+    ## Drop the remembered files in the specified directory
+    ## (defaul: current directory).
+    -d|--drop)
+      drop mv "$2"
+      exit 0
+    ;;
+    ## \option -p, --copy [DIR]
+    ## Copy (instead of move) the dragged files in the specified directory
+    ## (defaul: current directory).
+    -p|--copy)
+      drop cp "$2"
+      exit 0
+    ;;
+    ## \option -c, --clean
+    ## Clean the currently dragged files list (this option does not delete any file).
+    -c|--clean)
+      rm "${data_file}" 2>/dev/null
+      exit 0
+    ;;
+    ## \option -l, --list
+    ## List the currently dragged files.
+    -l|--list)
+      cat "${data_file}" 2>/dev/null
+      exit 0
+    ;;
+  esac
+
+  for f; do
+    if [ "${f:0:1}" = "/" ]; then
+      echo "$f" >> "${data_file}"
+    else
+      echo "${PWD}/$f" >> "${data_file}"
+    fi
+  done
+}
+
+## \usage drag FILES
+## \usage drag -d|-p [DIR]
+## \usage drag -c|-l
+main "$@"
+
+```
+
+*The documentation syntax used in this script is documented here: <https://pawamoy.github.io/shellman/usage/syntax/>.*
+
+We can inject documentation for our script using this markup:
+
+```
+::: scripts/drag
+    handler: shell
+
+```
+
+...which would render the following documentation:
+
+## drag
+
+Save file paths in a buffer to move them somewhere else.
+
+**Usage**
+
+```
+drag FILES
+```
+
+```
+drag -d|-p [DIR]
+```
+
+```
+drag -c|-l
+```
+
+**Description**
+
+This tool lets you save file paths into a buffer before moving or copying them somewhere else. It acts like a drag-and-drop utility but for the command-line. It can be useful when you don't want to type the entire destination path and proceed in three or more steps instead, using shortcut commands to move around your filesystem, dragging files from multiple directories.
+
+**Options**
+
+- `-h`, `--help`: Print this help and exit.
+- `-d`, ``` --drop``[DIR] ```: Drop the remembered files in the specified directory (defaul: current directory).
+- `-p`, ``` --copy``[DIR] ```: Copy (instead of move) the dragged files in the specified directory (defaul: current directory).
+- `-c`, `--clean`: Clean the currently dragged files list (this option does not delete any file).
+- `-l`, `--list`: List the currently dragged files.
+
+**Exit Status**
+
+- `1`: No arguments provided.
+
+**Examples** *Drag files from multiple directories, drop them in another:*
+
+```
+cd ~/Documents
+drag ThisPlaylist.s3u
+cd ../Downloads
+drag ThisTrack.ogg AndThisVideo.mp4
+drag --drop ../project
+
+```
+
+In this example, we simply move around in the filesystem, picking files in each of these directories. At the end, we drop them all in a specific directory.
+
+*Define a convenient `drop` alias:*
+
+```
+alias drop='drag -d'
+drag file.txt
+cd /somewhere/else
+drop
+
+```
+
+In this example, we define a `drop` alias that allows us to actually run `drag` then `drop` (instead of `drag --drop`).
+
+**Authors**
+
+Timothée Mazzucotelli / @pawamoy [dev@pawamoy.fr](mailto:dev@pawamoy.fr)
+
+# shell
+
+Shell handler for mkdocstrings.
+
+Modules:
+
+- **`config`** – Deprecated. Import from mkdocstrings_handlers.shell directly.
+- **`handler`** – Deprecated. Import from mkdocstrings_handlers.shell directly.
+
+Classes:
+
+- **`ShellConfig`** – Shell handler configuration.
+- **`ShellHandler`** – The Shell handler class.
+- **`ShellInputConfig`** – Shell handler configuration.
+- **`ShellInputOptions`** – Accepted input options.
+- **`ShellOptions`** – Final options passed as template context.
+
+Functions:
+
+- **`get_handler`** – Simply return an instance of ShellHandler.
+
+## ShellConfig
+
+```
+ShellConfig(options: dict[str, Any] = dict())
+
+```
+
+Bases: `ShellInputConfig`
+
+Shell handler configuration.
+
+Methods:
+
+- **`coerce`** – Coerce data.
+- **`from_data`** – Create an instance from a dictionary.
+
+Attributes:
+
+- **`options`** (`dict[str, Any]`) – Global options in mkdocs.yml.
+
+### options
+
+```
+options: dict[str, Any] = field(default_factory=dict)
+
+```
+
+Global options in mkdocs.yml.
+
+### coerce
+
+```
+coerce(**data: Any) -> MutableMapping[str, Any]
+
+```
+
+Coerce data.
+
+### from_data
+
+```
+from_data(**data: Any) -> Self
+
+```
+
+Create an instance from a dictionary.
+
+## ShellHandler
+
+```
+ShellHandler(
+    config: ShellConfig, base_dir: Path, **kwargs: Any
+)
+
+```
+
+Bases: `BaseHandler`
+
+The Shell handler class.
+
+Methods:
+
+- **`collect`** – Collect data from a shell script/library.
+- **`do_convert_markdown`** – Render Markdown text; for use inside templates.
+- **`do_heading`** – Render an HTML heading and register it for the table of contents. For use inside templates.
+- **`get_aliases`** – Return the possible aliases for a given identifier.
+- **`get_extended_templates_dirs`** – Load template extensions for the given handler, return their templates directories.
+- **`get_headings`** – Return and clear the headings gathered so far.
+- **`get_inventory_urls`** – Return the URLs (and configuration options) of the inventory files to download.
+- **`get_options`** – Get the combined (global and local) options.
+- **`get_templates_dir`** – Return the path to the handler's templates directory.
+- **`load_inventory`** – Yield items and their URLs from an inventory file streamed from in_file.
+- **`render`** – Render the collected data.
+- **`render_backlinks`** – Render backlinks.
+- **`teardown`** – Teardown the handler.
+- **`update_env`** – Update the Jinja environment.
+
+Attributes:
+
+- **`base_dir`** – The base directory for the handler.
+- **`config`** – The handler configuration.
+- **`custom_templates`** – The path to custom templates.
+- **`domain`** (`str`) – The cross-documentation domain/language for this handler.
+- **`enable_inventory`** (`bool`) – Whether this handler is interested in enabling the creation of the objects.inv Sphinx inventory file.
+- **`env`** – The Jinja environment.
+- **`extra_css`** (`str`) – Extra CSS.
+- **`fallback_config`** (`dict`) – Fallback configuration when searching anchors for identifiers.
+- **`fallback_theme`** (`str`) – The theme to fallback to.
+- **`global_options`** – The global options for the handler.
+- **`md`** (`Markdown`) – The Markdown instance.
+- **`mdx`** – The Markdown extensions to use.
+- **`mdx_config`** – The configuration for the Markdown extensions.
+- **`name`** (`str`) – The handler's name.
+- **`outer_layer`** (`bool`) – Whether we're in the outer Markdown conversion layer.
+- **`theme`** – The selected theme.
+
+### base_dir
+
+```
+base_dir = base_dir
+
+```
+
+The base directory for the handler.
+
+### config
+
+```
+config = config
+
+```
+
+The handler configuration.
+
+### custom_templates
+
+```
+custom_templates = custom_templates
+
+```
+
+The path to custom templates.
+
+### domain
+
+```
+domain: str = 'shell'
+
+```
+
+The cross-documentation domain/language for this handler.
+
+### enable_inventory
+
+```
+enable_inventory: bool = False
+
+```
+
+Whether this handler is interested in enabling the creation of the `objects.inv` Sphinx inventory file.
+
+### env
+
+```
+env = Environment(
+    autoescape=True,
+    loader=FileSystemLoader(paths),
+    auto_reload=False,
+)
+
+```
+
+The Jinja environment.
+
+### extra_css
+
+```
+extra_css: str = ''
+
+```
+
+Extra CSS.
+
+### fallback_config
+
+```
+fallback_config: dict = {}
+
+```
+
+Fallback configuration when searching anchors for identifiers.
+
+### fallback_theme
+
+```
+fallback_theme: str = 'material'
+
+```
+
+The theme to fallback to.
+
+### global_options
+
+```
+global_options = options
+
+```
+
+The global options for the handler.
+
+### md
+
+```
+md: Markdown
+
+```
+
+The Markdown instance.
+
+Raises:
+
+- `RuntimeError` – When the Markdown instance is not set yet.
+
+### mdx
+
+```
+mdx = mdx
+
+```
+
+The Markdown extensions to use.
+
+### mdx_config
+
+```
+mdx_config = mdx_config
+
+```
+
+The configuration for the Markdown extensions.
+
+### name
+
+```
+name: str = 'shell'
+
+```
+
+The handler's name.
+
+### outer_layer
+
+```
+outer_layer: bool
+
+```
+
+Whether we're in the outer Markdown conversion layer.
+
+### theme
+
+```
+theme = theme
+
+```
+
+The selected theme.
+
+### collect
+
+```
+collect(
+    identifier: str, options: ShellOptions
+) -> CollectorItem
+
+```
+
+Collect data from a shell script/library.
+
+### do_convert_markdown
+
+```
+do_convert_markdown(
+    text: str,
+    heading_level: int,
+    html_id: str = "",
+    *,
+    strip_paragraph: bool = False,
+    autoref_hook: AutorefsHookInterface | None = None,
+) -> Markup
+
+```
+
+Render Markdown text; for use inside templates.
+
+Parameters:
+
+- **`text`** (`str`) – The text to convert.
+- **`heading_level`** (`int`) – The base heading level to start all Markdown headings from.
+- **`html_id`** (`str`, default: `''` ) – The HTML id of the element that's considered the parent of this element.
+- **`strip_paragraph`** (`bool`, default: `False` ) – Whether to exclude the <p> tag from around the whole output.
+
+Returns:
+
+- `Markup` – An HTML string.
+
+### do_heading
+
+```
+do_heading(
+    content: Markup,
+    heading_level: int,
+    *,
+    role: str | None = None,
+    hidden: bool = False,
+    toc_label: str | None = None,
+    **attributes: str,
+) -> Markup
+
+```
+
+Render an HTML heading and register it for the table of contents. For use inside templates.
+
+Parameters:
+
+- **`content`** (`Markup`) – The HTML within the heading.
+- **`heading_level`** (`int`) – The level of heading (e.g. 3 -> h3).
+- **`role`** (`str | None`, default: `None` ) – An optional role for the object bound to this heading.
+- **`hidden`** (`bool`, default: `False` ) – If True, only register it for the table of contents, don't render anything.
+- **`toc_label`** (`str | None`, default: `None` ) – The title to use in the table of contents ('data-toc-label' attribute).
+- **`**attributes`** (`str`, default: `{}` ) – Any extra HTML attributes of the heading.
+
+Returns:
+
+- `Markup` – An HTML string.
+
+### get_aliases
+
+```
+get_aliases(identifier: str) -> tuple[str, ...]
+
+```
+
+Return the possible aliases for a given identifier.
+
+Parameters:
+
+- **`identifier`** (`str`) – The identifier to get the aliases of.
+
+Returns:
+
+- `tuple[str, ...]` – A tuple of strings - aliases.
+
+### get_extended_templates_dirs
+
+```
+get_extended_templates_dirs(handler: str) -> list[Path]
+
+```
+
+Load template extensions for the given handler, return their templates directories.
+
+Parameters:
+
+- **`handler`** (`str`) – The name of the handler to get the extended templates directory of.
+
+Returns:
+
+- `list[Path]` – The extensions templates directories.
+
+### get_headings
+
+```
+get_headings() -> Sequence[Element]
+
+```
+
+Return and clear the headings gathered so far.
+
+Returns:
+
+- `Sequence[Element]` – A list of HTML elements.
+
+### get_inventory_urls
+
+```
+get_inventory_urls() -> list[tuple[str, dict[str, Any]]]
+
+```
+
+Return the URLs (and configuration options) of the inventory files to download.
+
+### get_options
+
+```
+get_options(
+    local_options: Mapping[str, Any],
+) -> HandlerOptions
+
+```
+
+Get the combined (global and local) options.
+
+### get_templates_dir
+
+```
+get_templates_dir(handler: str | None = None) -> Path
+
+```
+
+Return the path to the handler's templates directory.
+
+Override to customize how the templates directory is found.
+
+Parameters:
+
+- **`handler`** (`str | None`, default: `None` ) – The name of the handler to get the templates directory of.
+
+Raises:
+
+- `ModuleNotFoundError` – When no such handler is installed.
+- `FileNotFoundError` – When the templates directory cannot be found.
+
+Returns:
+
+- `Path` – The templates directory path.
+
+### load_inventory
+
+```
+load_inventory(
+    in_file: BinaryIO,
+    url: str,
+    base_url: str | None = None,
+    **kwargs: Any,
+) -> Iterator[tuple[str, str]]
+
+```
+
+Yield items and their URLs from an inventory file streamed from `in_file`.
+
+Parameters:
+
+- **`in_file`** (`BinaryIO`) – The binary file-like object to read the inventory from.
+- **`url`** (`str`) – The URL that this file is being streamed from (used to guess base_url).
+- **`base_url`** (`str | None`, default: `None` ) – The URL that this inventory's sub-paths are relative to.
+- **`**kwargs`** (`Any`, default: `{}` ) – Ignore additional arguments passed from the config.
+
+Yields:
+
+- `tuple[str, str]` – Tuples of (item identifier, item URL).
+
+### render
+
+```
+render(data: CollectorItem, options: ShellOptions) -> str
+
+```
+
+Render the collected data.
+
+### render_backlinks
+
+```
+render_backlinks(
+    backlinks: Mapping[str, Iterable[Backlink]],
+) -> str
+
+```
+
+Render backlinks.
+
+### teardown
+
+```
+teardown() -> None
+
+```
+
+Teardown the handler.
+
+This method should be implemented to, for example, terminate a subprocess that was started when creating the handler instance.
+
+### update_env
+
+```
+update_env(config: MkDocsConfig) -> None
+
+```
+
+Update the Jinja environment.
+
+## ShellInputConfig
+
+```
+ShellInputConfig(
+    options: Annotated[
+        ShellInputOptions,
+        _Field(
+            description="Configuration options for collecting and rendering objects."
+        ),
+    ] = ShellInputOptions(),
+)
+
+```
+
+Shell handler configuration.
+
+Methods:
+
+- **`coerce`** – Coerce data.
+- **`from_data`** – Create an instance from a dictionary.
+
+Attributes:
+
+- **`options`** (`Annotated[ShellInputOptions, _Field(description='Configuration options for collecting and rendering objects.')]`) – Configuration options for collecting and rendering objects.
+
+### options
+
+```
+options: Annotated[
+    ShellInputOptions,
+    _Field(
+        description="Configuration options for collecting and rendering objects."
+    ),
+] = field(default_factory=ShellInputOptions)
+
+```
+
+Configuration options for collecting and rendering objects.
+
+### coerce
+
+```
+coerce(**data: Any) -> MutableMapping[str, Any]
+
+```
+
+Coerce data.
+
+### from_data
+
+```
+from_data(**data: Any) -> Self
+
+```
+
+Create an instance from a dictionary.
+
+## ShellInputOptions
+
+```
+ShellInputOptions(
+    extra: Annotated[
+        dict[str, Any],
+        _Field(
+            group="general", description="Extra options."
+        ),
+    ] = dict(),
+    heading: Annotated[
+        str,
+        _Field(
+            group="headings",
+            description="A custom string to override the autogenerated heading of the root object.",
+        ),
+    ] = "",
+    heading_level: Annotated[
+        int,
+        _Field(
+            group="headings",
+            description="The initial heading level to use.",
+        ),
+    ] = 2,
+    show_symbol_type_heading: Annotated[
+        bool,
+        _Field(
+            group="headings",
+            description="Show the symbol type in headings (e.g. mod, class, meth, func and attr).",
+        ),
+    ] = False,
+    show_symbol_type_toc: Annotated[
+        bool,
+        _Field(
+            group="headings",
+            description="Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).",
+        ),
+    ] = False,
+    toc_label: Annotated[
+        str,
+        _Field(
+            group="headings",
+            description="A custom string to override the autogenerated toc label of the root object.",
+        ),
+    ] = "",
+)
+
+```
+
+Accepted input options.
+
+Methods:
+
+- **`coerce`** – Coerce data.
+- **`from_data`** – Create an instance from a dictionary.
+
+Attributes:
+
+- **`extra`** (`Annotated[dict[str, Any], _Field(group='general', description='Extra options.')]`) – Extra options.
+- **`heading`** (`Annotated[str, _Field(group='headings', description='A custom string to override the autogenerated heading of the root object.')]`) – A custom string to override the autogenerated heading of the root object.
+- **`heading_level`** (`Annotated[int, _Field(group='headings', description='The initial heading level to use.')]`) – The initial heading level to use.
+- **`show_symbol_type_heading`** (`Annotated[bool, _Field(group='headings', description='Show the symbol type in headings (e.g. mod, class, meth, func and attr).')]`) – Show the symbol type in headings (e.g. mod, class, meth, func and attr).
+- **`show_symbol_type_toc`** (`Annotated[bool, _Field(group='headings', description='Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).')]`) – Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).
+- **`toc_label`** (`Annotated[str, _Field(group='headings', description='A custom string to override the autogenerated toc label of the root object.')]`) – A custom string to override the autogenerated toc label of the root object.
+
+### extra
+
+```
+extra: Annotated[
+    dict[str, Any],
+    _Field(group="general", description="Extra options."),
+] = field(default_factory=dict)
+
+```
+
+Extra options.
+
+### heading
+
+```
+heading: Annotated[
+    str,
+    _Field(
+        group="headings",
+        description="A custom string to override the autogenerated heading of the root object.",
+    ),
+] = ""
+
+```
+
+A custom string to override the autogenerated heading of the root object.
+
+### heading_level
+
+```
+heading_level: Annotated[
+    int,
+    _Field(
+        group="headings",
+        description="The initial heading level to use.",
+    ),
+] = 2
+
+```
+
+The initial heading level to use.
+
+### show_symbol_type_heading
+
+```
+show_symbol_type_heading: Annotated[
+    bool,
+    _Field(
+        group="headings",
+        description="Show the symbol type in headings (e.g. mod, class, meth, func and attr).",
+    ),
+] = False
+
+```
+
+Show the symbol type in headings (e.g. mod, class, meth, func and attr).
+
+### show_symbol_type_toc
+
+```
+show_symbol_type_toc: Annotated[
+    bool,
+    _Field(
+        group="headings",
+        description="Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).",
+    ),
+] = False
+
+```
+
+Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).
+
+### toc_label
+
+```
+toc_label: Annotated[
+    str,
+    _Field(
+        group="headings",
+        description="A custom string to override the autogenerated toc label of the root object.",
+    ),
+] = ""
+
+```
+
+A custom string to override the autogenerated toc label of the root object.
+
+### coerce
+
+```
+coerce(**data: Any) -> MutableMapping[str, Any]
+
+```
+
+Coerce data.
+
+### from_data
+
+```
+from_data(**data: Any) -> Self
+
+```
+
+Create an instance from a dictionary.
+
+## ShellOptions
+
+```
+ShellOptions(
+    extra: Annotated[
+        dict[str, Any],
+        _Field(
+            group="general", description="Extra options."
+        ),
+    ] = dict(),
+    heading: Annotated[
+        str,
+        _Field(
+            group="headings",
+            description="A custom string to override the autogenerated heading of the root object.",
+        ),
+    ] = "",
+    heading_level: Annotated[
+        int,
+        _Field(
+            group="headings",
+            description="The initial heading level to use.",
+        ),
+    ] = 2,
+    show_symbol_type_heading: Annotated[
+        bool,
+        _Field(
+            group="headings",
+            description="Show the symbol type in headings (e.g. mod, class, meth, func and attr).",
+        ),
+    ] = False,
+    show_symbol_type_toc: Annotated[
+        bool,
+        _Field(
+            group="headings",
+            description="Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).",
+        ),
+    ] = False,
+    toc_label: Annotated[
+        str,
+        _Field(
+            group="headings",
+            description="A custom string to override the autogenerated toc label of the root object.",
+        ),
+    ] = "",
+)
+
+```
+
+Bases: `ShellInputOptions`
+
+Final options passed as template context.
+
+Methods:
+
+- **`coerce`** – Create an instance from a dictionary.
+- **`from_data`** – Create an instance from a dictionary.
+
+Attributes:
+
+- **`extra`** (`Annotated[dict[str, Any], _Field(group='general', description='Extra options.')]`) – Extra options.
+- **`heading`** (`Annotated[str, _Field(group='headings', description='A custom string to override the autogenerated heading of the root object.')]`) – A custom string to override the autogenerated heading of the root object.
+- **`heading_level`** (`Annotated[int, _Field(group='headings', description='The initial heading level to use.')]`) – The initial heading level to use.
+- **`show_symbol_type_heading`** (`Annotated[bool, _Field(group='headings', description='Show the symbol type in headings (e.g. mod, class, meth, func and attr).')]`) – Show the symbol type in headings (e.g. mod, class, meth, func and attr).
+- **`show_symbol_type_toc`** (`Annotated[bool, _Field(group='headings', description='Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).')]`) – Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).
+- **`toc_label`** (`Annotated[str, _Field(group='headings', description='A custom string to override the autogenerated toc label of the root object.')]`) – A custom string to override the autogenerated toc label of the root object.
+
+### extra
+
+```
+extra: Annotated[
+    dict[str, Any],
+    _Field(group="general", description="Extra options."),
+] = field(default_factory=dict)
+
+```
+
+Extra options.
+
+### heading
+
+```
+heading: Annotated[
+    str,
+    _Field(
+        group="headings",
+        description="A custom string to override the autogenerated heading of the root object.",
+    ),
+] = ""
+
+```
+
+A custom string to override the autogenerated heading of the root object.
+
+### heading_level
+
+```
+heading_level: Annotated[
+    int,
+    _Field(
+        group="headings",
+        description="The initial heading level to use.",
+    ),
+] = 2
+
+```
+
+The initial heading level to use.
+
+### show_symbol_type_heading
+
+```
+show_symbol_type_heading: Annotated[
+    bool,
+    _Field(
+        group="headings",
+        description="Show the symbol type in headings (e.g. mod, class, meth, func and attr).",
+    ),
+] = False
+
+```
+
+Show the symbol type in headings (e.g. mod, class, meth, func and attr).
+
+### show_symbol_type_toc
+
+```
+show_symbol_type_toc: Annotated[
+    bool,
+    _Field(
+        group="headings",
+        description="Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).",
+    ),
+] = False
+
+```
+
+Show the symbol type in the Table of Contents (e.g. mod, class, methd, func and attr).
+
+### toc_label
+
+```
+toc_label: Annotated[
+    str,
+    _Field(
+        group="headings",
+        description="A custom string to override the autogenerated toc label of the root object.",
+    ),
+] = ""
+
+```
+
+A custom string to override the autogenerated toc label of the root object.
+
+### coerce
+
+```
+coerce(**data: Any) -> MutableMapping[str, Any]
+
+```
+
+Create an instance from a dictionary.
+
+### from_data
+
+```
+from_data(**data: Any) -> Self
+
+```
+
+Create an instance from a dictionary.
+
+## get_handler
+
+```
+get_handler(
+    *,
+    handler_config: MutableMapping[str, Any],
+    tool_config: MkDocsConfig,
+    **kwargs: Any,
+) -> ShellHandler
+
+```
+
+Simply return an instance of `ShellHandler`.
+
+Parameters:
+
+- **`handler_config`** (`MutableMapping[str, Any]`) – The handler configuration.
+- **`tool_config`** (`MkDocsConfig`) – The tool (SSG) configuration.
+- **`**kwargs`** (`Any`, default: `{}` ) – Keyword arguments for the base handler constructor.
+
+Returns:
+
+- `ShellHandler` – An instance of the handler.
