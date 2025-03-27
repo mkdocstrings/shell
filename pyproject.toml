@@ -31,7 +31,7 @@ classifiers = [
 ]
 dependencies = [
     "mkdocstrings>=0.28.3",
-    "shellman>=1.0.0",
+    "shellman>=1.0.2",
 ]
 
 [project.urls]

@@ -7,8 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 from mkdocs.exceptions import PluginError
 from mkdocstrings import BaseHandler, CollectionError, CollectorItem, get_logger
-from shellman import DocFile
-from shellman.templates.filters import FILTERS
+from shellman import FILTERS, DocFile
 
 from mkdocstrings_handlers.shell._internal.config import ShellConfig, ShellOptions
 
