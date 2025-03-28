@@ -19,7 +19,6 @@ hooks:
 nav:
 - Home:
   - Overview: index.md
-  - Configuration: configuration.md
   - Changelog: changelog.md
   - Credits: credits.md
   - License: license.md

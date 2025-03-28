@@ -10,7 +10,7 @@ For example, globally:
 plugins:
 - mkdocstrings:
     handlers:
-      python:
+      shell:
         options:
           do_something: true
 ```
