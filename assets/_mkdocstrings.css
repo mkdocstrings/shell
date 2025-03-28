@@ -176,3 +176,46 @@ code.doc-symbol-module::after {
 .doc-md-description>p:first-child {
     display: inline;
 }
+
+/* Symbols in Navigation and ToC. */
+:root,
+[data-md-color-scheme="default"] {
+    --doc-symbol-sh-function-fg-color: #8250df;
+    --doc-symbol-sh-script-fg-color: #0550ae;
+
+    --doc-symbol-sh-function-bg-color: #8250df1a;
+    --doc-symbol-sh-script-bg-color: #0550ae1a;
+  }
+
+  [data-md-color-scheme="slate"] {
+    --doc-symbol-sh-function-fg-color: #d2a8ff;
+    --doc-symbol-sh-script-fg-color: #79c0ff;
+
+    --doc-symbol-sh-function-bg-color: #d2a8ff1a;
+    --doc-symbol-sh-script-bg-color: #79c0ff1a;
+  }
+
+code.doc-symbol {
+  border-radius: .1rem;
+  font-size: .85em;
+  padding: 0 .3em;
+  font-weight: bold;
+}
+
+code.doc-symbol-sh-function {
+  color: var(--doc-symbol-sh-function-fg-color);
+  background-color: var(--doc-symbol-sh-function-bg-color);
+}
+
+code.doc-symbol-sh-function::after {
+  content: "function";
+}
+
+code.doc-symbol-sh-script {
+  color: var(--doc-symbol-sh-script-fg-color);
+  background-color: var(--doc-symbol-sh-script-bg-color);
+}
+
+code.doc-symbol-sh-script::after {
+  content: "script";
+}
