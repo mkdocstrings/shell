@@ -102,6 +102,7 @@ ci = [
     "mkdocs-llmstxt>=0.1",
     "mkdocs-material>=9.5",
     "mkdocs-minify-plugin>=0.8",
+    "mkdocs-redirects>=1.2",
     "mkdocs-section-index>=0.3",
     "mkdocstrings[python]>=0.29",
     "pydantic>=2.10",

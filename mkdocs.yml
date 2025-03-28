@@ -168,6 +168,9 @@ plugins:
     enabled: !ENV [MATERIAL_INSIDERS, false]
     plugins:
     - typeset
+- redirects:
+    redirect_maps:
+      configuration.md: usage/configuration/index.md
 
 extra:
   social:
