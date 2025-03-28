@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 <!-- insertion marker -->
+## [1.0.4](https://github.com/mkdocstrings/shell/releases/tag/1.0.4) - 2025-03-28
+
+<small>[Compare with 1.0.3](https://github.com/mkdocstrings/shell/compare/1.0.3...1.0.4)</small>
+
+### Bug Fixes
+
+- Add CSS for symbols ([20e891c](https://github.com/mkdocstrings/shell/commit/20e891c9775b6b7ff3b61ac306a3ac0e695da748) by Timothée Mazzucotelli).
+
 ## [1.0.3](https://github.com/mkdocstrings/shell/releases/tag/1.0.3) - 2025-03-27
 
 <small>[Compare with 1.0.2](https://github.com/mkdocstrings/shell/compare/1.0.2...1.0.3)</small>
