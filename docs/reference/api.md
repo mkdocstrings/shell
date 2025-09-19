@@ -5,3 +5,4 @@ hide:
 ---
 
 # ::: mkdocstrings_handlers.shell
+    handler: python

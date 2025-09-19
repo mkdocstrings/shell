@@ -126,6 +126,7 @@ plugins:
 - section-index
 - coverage
 - mkdocstrings:
+    default_handler: shell
     handlers:
       python:
         inventories:
