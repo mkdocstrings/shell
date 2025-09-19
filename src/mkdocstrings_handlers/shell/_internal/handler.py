@@ -62,7 +62,7 @@ class ShellHandler(BaseHandler):
         except FileNotFoundError as error:
             raise CollectionError(f"Could not find script '{script_path}'") from error
 
-    def render(self, data: CollectorItem, options: ShellOptions) -> str:
+    def render(self, data: CollectorItem, options: ShellOptions, *, locale: str | None = None) -> str:  # noqa: ARG002
         """Render the collected data."""
         heading_level = options.heading_level
         template = self.env.get_template("script.html.jinja")
