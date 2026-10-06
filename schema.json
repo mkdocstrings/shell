@@ -17,6 +17,7 @@
       "description": "Accepted input options.",
       "properties": {
         "extra": {
+          "additionalProperties": true,
           "description": "Extra options.",
           "markdownDescription": "[DOCUMENTATION](https://mkdocstrings.github.io/shell/usage/configuration/general/#extra)\n\nExtra options.",
           "title": "extra",

@@ -1,0 +1,12 @@
+# mkdocstrings-shell
+
+> A shell scripts/libraries handler for mkdocstrings.
+
+## Usage
+
+- [Overview](https://mkdocstrings.github.io/shell/index.md)
+
+## API
+
+- [API reference](https://mkdocstrings.github.io/shell/reference/api/index.md)
+
