@@ -3,7 +3,7 @@
 [![ci](https://github.com/mkdocstrings/shell/workflows/ci/badge.svg)](https://github.com/mkdocstrings/shell/actions?query=workflow%3Aci)
 [![documentation](https://img.shields.io/badge/docs-mkdocs-708FCC.svg?style=flat)](https://mkdocstrings.github.io/shell/)
 [![pypi version](https://img.shields.io/pypi/v/mkdocstrings-shell.svg)](https://pypi.org/project/mkdocstrings-shell/)
-[![gitter](https://badges.gitter.im/join%20chat.svg)](https://app.gitter.im/#/room/#shell:gitter.im)
+[![gitter](https://img.shields.io/badge/matrix-chat-4DB798.svg?style=flat)](https://app.gitter.im/#/room/#shell:gitter.im)
 
 A shell scripts/libraries handler for mkdocstrings.
 It uses [Shellman](https://github.com/pawamoy/shellman)
@@ -38,3 +38,8 @@ Use *mkdocstrings* syntax to inject documentation for a script:
 
 Specifying `handler: shell` is optional if you declared `shell`
 as default handler in mkdocs.yml.
+
+## Sponsors
+
+<!-- sponsors-start -->
+<!-- sponsors-end -->
